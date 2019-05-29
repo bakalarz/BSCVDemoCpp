@@ -1,17 +1,17 @@
 // Copyright 2018 Cedric Lemaitre
 
-#ifndef SRC_COMMON_PASSAGER_HPP_
-#define SRC_COMMON_PASSAGER_HPP_
+#ifndef SRC_COMMON_PASSENGER_HPP_
+#define SRC_COMMON_PASSENGER_HPP_
 
 #include <string>
 
-/// class Passagerwhich data for a passager
+/// class Passengerwhich data for a passenger
 // only a constructor and data (private)
-class Passager {
+class Passenger {
  public:
      /// Constructor with in parameter all data which should affected to the
      // menber variables
-     Passager(bool,
+     Passenger(bool,
              int,
              bool,
              int,
@@ -26,6 +26,7 @@ class Passager {
              std::string,
              bool,
              bool);
+    friend std::ostream &operator<<(std::ostream &out, const Passenger &p);
 // private:
     bool survived;  ///< survived or not
     int pclass;  ///< range class
@@ -42,6 +43,10 @@ class Passager {
     std::string embark_town;
     bool alive;
     bool alone;
+    //sorting
+    bool operator< (const Passenger &p) const {
+        return age < p.age;
+    }
 };
-#endif  //  SRC_COMMON_PASSAGER_HPP_
+#endif  //  SRC_COMMON_PASSENGER_HPP_
 

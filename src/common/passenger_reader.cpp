@@ -1,8 +1,11 @@
 //  Copyright Cedric Lemaitre 2018
 
-#include "passager_reader.hpp"
+#include "passenger_reader.hpp"
+#include <iostream>
+#include <algorithm>
 
-PassagerReader::PassagerReader(const std::string & file_name) {
+PassengerReader::PassengerReader(const std::string &file_name)
+{
     nb_col_csv = 15;
     filename = file_name;
     std::ifstream if_file(file_name);
@@ -15,10 +18,10 @@ PassagerReader::PassagerReader(const std::string & file_name) {
     } else {
         std::cout << "Can't open file";
     }  // if open file
-}  // end PassagerReader
+}  // end PassengerReader
 
-
-void PassagerReader::parse_line(std::string line) {
+void PassengerReader::parse_line(std::string line)
+{
     bool survived;
     int pclass;
     bool sex;
@@ -89,7 +92,7 @@ void PassagerReader::parse_line(std::string line) {
                 count++;
                 break;
             case 10:
-                if (cell == "1")
+                if (cell == "True")
                     adult_male = true;
                 else
                     adult_male = false;
@@ -121,8 +124,23 @@ void PassagerReader::parse_line(std::string line) {
                 std::cout << "Warning : value of count in [0, 14]\n";
         }  //  switch case
     }  //  while end line
-    Passager temp_passager(survived, pclass, sex, age, slbsp, parch, fare,
+    Passenger temp_passenger(survived, pclass, sex, age, slbsp, parch, fare,
             embarked, type_class, who, adult_male, deck, embark_town, alive,
             alone);
-    liste_passager.push_back(temp_passager);
+    list_of_passengers.push_back(temp_passenger);
 }
+
+void PassengerReader::sorting(const std::string &property)
+{
+    auto sortRuleLambda = [property] (const Passenger& p1, const Passenger& p2) -> bool
+    {
+        if(property == "age")
+            return p1.age < p2.age;
+        else
+            return p1.fare < p2.fare;
+    };
+
+std::sort(list_of_passengers.begin(), list_of_passengers.end(), sortRuleLambda);
+}
+
+  
